@@ -6,6 +6,7 @@ const Colors = {
     primary: '#4481FC',
     danger: '#F5365C',
     shadowColor: '#7F5DF0',
+    green: '#30ba55',
 };
 
 export default Colors;

@@ -1,9 +1,11 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Image, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 import Error from '../components/Error';
 import { getRegionDetails } from '../services/service';
-import { getRemainingData, randomQuestions } from '../utils/RandomQuestionSelector';
+import { getAllQuestions } from '../utils/RandomQuestionSelector';
 import Colors from '../theme/Colors';
+import moment from 'moment';
+import { getDurationString, shuffle } from '../utils/Helpers';
 
 const QuestionsScreen = ({ navigation, route }) => {
     const data = route.params.data;
@@ -13,19 +15,28 @@ const QuestionsScreen = ({ navigation, route }) => {
     const [otherAnswers, setOtherAnswers] = React.useState([]);
     const [error, setError] = React.useState();
     const [correctAnswers, setCorrectAnswers] = React.useState(0);
+    const [startDateAndTime, setStartDateAndTime] = React.useState(Date.now());
 
     const onItemSelectedCapital = (item) => {
+        if (item.capital == gameQuestions[questionIndex].capital) {
+            setCorrectAnswers(correctAnswers + 1);
+        }
+
         if (questionIndex + 1 == data.questionNo) {
+            var endDate = Date.now();
+            var durationInMillis = endDate - startDateAndTime;
+
+            var duration = getDurationString(durationInMillis);
+
             navigation.navigate(route.params.nextRoute, {
                 data: {
                     correctAns: correctAnswers,
+                    startDate: moment(startDateAndTime).format('DD MMM yyyy, HH:mm'),
+                    duration: duration,
                 },
             });
-            return;
-        }
 
-        if (item.capital == gameQuestions[questionIndex].capital) {
-            setCorrectAnswers(correctAnswers + 1);
+            return;
         }
 
         setQuestionIndex(questionIndex + 1);
@@ -33,31 +44,20 @@ const QuestionsScreen = ({ navigation, route }) => {
 
     const getAllAnswers = () => {
         var a = [...otherAnswers[questionIndex]];
-        a.push(gameQuestions[questionIndex]);
         shuffle(a);
         return a;
-    };
-
-    const shuffle = (arr) => {
-        var i, j, temp;
-        for (i = arr.length - 1; i > 0; i--) {
-            j = Math.floor(Math.random() * (i + 1));
-            temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-        }
-        return arr;
     };
 
     React.useEffect(() => {
         getRegionDetails(data.region)
             .then(resp => {
-                const array = randomQuestions(resp, data.questionNo);
-                setGameQuestions(array);
+                const array = getAllQuestions(resp, data.questionNo);
+                setGameQuestions(array.correctAnswers);
 
-                setOtherAnswers(getRemainingData(array, resp));
+                setOtherAnswers(array.allQuestions);
                 setQuestionIndex(0);
                 setLoading(false);
+                setStartDateAndTime(Date.now());
             })
             .catch(err => {
                 setError(err);
@@ -75,7 +75,7 @@ const QuestionsScreen = ({ navigation, route }) => {
                     <View style={styles.list}>
                         <FlatList
                             data={getAllAnswers()}
-                            keyExtractor={(item, index) => index.toString()}
+                            keyExtractor={(item, index) => index}
                             renderItem={({ item }) =>
                                 <TouchableOpacity
                                     style={styles.listItem}

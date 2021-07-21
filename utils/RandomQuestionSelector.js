@@ -1,6 +1,6 @@
 //correct answers
 export const randomQuestions = (dataArray, questionNumer) => {
-    const length = dataArray.length;
+    const length = dataArray.length - 1;
     const questions = [];
     const alreadyUsedIndexes = [];
 
@@ -15,38 +15,47 @@ export const randomQuestions = (dataArray, questionNumer) => {
         questions.push(dataArray[index]);
     }
 
-    return questions;
+    return { questions: questions, indexes: alreadyUsedIndexes };
 };
 
 //other answers
-export const randomOtherAnswers = (dataArray, blacklistedAlpha2Code = '') => {
-    const length = dataArray.length;
+export const randomOtherAnswers = (dataArray, blacklistedIndex) => {
+    const length = dataArray.length - 1;
     const questions = [];
     const alreadyUsedIndexes = [];
 
-    var index = Math.floor(Math.random() * length);
+    while (alreadyUsedIndexes.length < 3) {
+        var r = Math.floor(Math.random() * length) + 1;
 
-    for (let i = 0; i < 3; ++i) {
-
-        console.log(dataArray[index].alpha2Code == blacklistedAlpha2Code);
-        while (alreadyUsedIndexes.findIndex((item) => item == index) > -1 || dataArray[index].alpha2Code == blacklistedAlpha2Code) {
-            index = Math.floor(Math.random() * length);
-            console.log(dataArray[index].alpha2Code == blacklistedAlpha2Code);
+        if (alreadyUsedIndexes.indexOf(r) === -1 && blacklistedIndex !== r) {
+            alreadyUsedIndexes.push(r);
         }
-        console.log('-----------------------');
+    }
 
-        alreadyUsedIndexes.push(index);
-        questions.push(dataArray[index]);
+    for (const i of alreadyUsedIndexes) {
+        questions.push(dataArray[i]);
     }
 
     return questions;
 };
 
-export const getRemainingData = (dataArray, array) => {
-    const others = [];
-    for (const q of array) {
-        others.push(randomOtherAnswers(dataArray, q.alpha2Code));
+export const getAllQuestions = (dataArray, questionNo) => {
+    var questionsAndIndexes = randomQuestions(dataArray, questionNo);
+    return getAllData(dataArray, questionsAndIndexes);
+};
+
+export const getAllData = (dataArray, questionsAndIndexes) => {
+    const allQuestions = [];
+    const questions = [...questionsAndIndexes.questions];
+    const indexes = [...questionsAndIndexes.indexes];
+
+    for (var i = 0; i < indexes.length; ++i) {
+        const data = [...randomOtherAnswers(dataArray, indexes[i]), questions[i]];
+        allQuestions.push(data);
     }
 
-    return others;
+    return {
+        correctAnswers: questions,
+        allQuestions: allQuestions,
+    };
 };
