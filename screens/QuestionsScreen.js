@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, Image } from 'react-native';
 import Error from '../components/Error';
 import { getRegionDetails } from '../services/service';
 import { getAllQuestions } from '../utils/RandomQuestionSelector';
@@ -82,6 +82,32 @@ const QuestionsScreen = ({ navigation, route }) => {
                                     onPress={() => onItemSelectedCapital(item)}>
                                     <Text style={styles.centeredText}>
                                         {item.capital}
+                                    </Text>
+                                </TouchableOpacity>} />
+                    </View>
+
+                </View>
+
+            )}
+            {!loading && !error && data.type === 'Guess the flag' && (
+                <View>
+                    <Text style={styles.question}>
+                        {data.type}
+                    </Text>
+                    <Image
+                        resizeMode={'cover'}
+                        style={styles.image}
+                        source={{ uri: `https://www.countryflags.io/${gameQuestions[questionIndex].alpha2Code}/shiny/64.png` }} />
+                    <View style={styles.list}>
+                        <FlatList
+                            data={getAllAnswers()}
+                            keyExtractor={(item, index) => index}
+                            renderItem={({ item }) =>
+                                <TouchableOpacity
+                                    style={styles.listItem}
+                                    onPress={() => onItemSelectedCapital(item)}>
+                                    <Text style={styles.centeredText}>
+                                        {item.name}
                                     </Text>
                                 </TouchableOpacity>} />
                     </View>

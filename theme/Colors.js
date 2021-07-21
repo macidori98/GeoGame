@@ -7,6 +7,7 @@ const Colors = {
     danger: '#F5365C',
     shadowColor: '#7F5DF0',
     green: '#30ba55',
+    cyclamen: '#ba3080',
 };
 
 export default Colors;
