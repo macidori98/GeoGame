@@ -15,4 +15,6 @@ export const GameTypes = [
 
 export const InitialGameObj = { type: '', region: '', questionNo: '' };
 
+export const InitialDetailedStatObj = { correctAns: 0, time: Date.now(), date: Date.now(), duration: 0 };
+
 export const QuestionNumberOptions = [{ name: '5' }, { name: '10' }, { name: '15' }];

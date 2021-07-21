@@ -36,7 +36,7 @@ const CountryDetailScreen = ({ route, navigation }) => {
 
     return (
         <React.Fragment>
-            {loading && (<ActivityIndicator style={style.container} size="large" color={Colors.primary} />)}
+            {loading && !error && (<ActivityIndicator style={style.container} size="large" color={Colors.primary} />)}
             {countryData && !error && !loading && (
                 <SafeAreaView>
                     <ScrollView>
