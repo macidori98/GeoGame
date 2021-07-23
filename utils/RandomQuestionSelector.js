@@ -1,5 +1,5 @@
-import { getCountryDetails, getRegionDetails } from "../services/service";
-import { shuffle } from "./Helpers";
+import { getCountryDetails, getRegionDetails } from '../services/service';
+import { shuffle } from './Helpers';
 
 //correct answers
 export const randomQuestions = (dataArray, questionNumer) => {
@@ -42,11 +42,6 @@ export const randomOtherAnswers = (dataArray, blacklistedIndex, numberOfNeededAn
     return questions;
 };
 
-export const getAllQuestions = (dataArray, questionNo, neighbor = false) => {
-    var questionsAndIndexes = randomQuestions(dataArray, questionNo);
-    return getAllData(dataArray, questionsAndIndexes, neighbor);
-};
-
 export const getAllData = (dataArray, questionsAndIndexes) => {
     const allQuestions = [];
     const questions = [...questionsAndIndexes.questions];
@@ -65,12 +60,63 @@ export const getAllData = (dataArray, questionsAndIndexes) => {
     };
 };
 
+export const generateGuessFlagQuestions = async (region, questionNo) => {
+    const dataArray = await getRegionDetails(region);
+    const randomCountries = randomQuestions(dataArray, questionNo);
+    const questions = [];
+
+    for (const country of randomCountries.questions) {
+        let goodAnswer = country.name;
+
+        const question = {
+            country: country.alpha2Code,
+            correctAnswer: goodAnswer,
+            options: [goodAnswer],
+        };
+
+        const otherOptions = randomOtherAnswers(dataArray, dataArray.indexOf(country));
+        for (const otherOption of otherOptions) {
+            question.options.push(otherOption.name);
+        }
+
+        shuffle(question.options);
+        questions.push(question);
+    }
+
+    return questions;
+};
+
+export const generateGuessCapitalQuestions = async (region, questionNo) => {
+    const dataArray = await getRegionDetails(region);
+    const randomCountries = randomQuestions(dataArray, questionNo);
+    const questions = [];
+
+    for (const country of randomCountries.questions) {
+        let goodAnswer = country.capital;
+
+        const question = {
+            country: country.name,
+            correctAnswer: goodAnswer,
+            options: [goodAnswer],
+        };
+
+        const otherOptions = randomOtherAnswers(dataArray, dataArray.indexOf(country));
+        for (const otherOption of otherOptions) {
+            question.options.push(otherOption.capital);
+        }
+
+        shuffle(question.options);
+        questions.push(question);
+    }
+
+    return questions;
+};
+
 export const generateGuessTheNeighbourQuestions = async (region, questionNo) => {
     const dataArray = await getRegionDetails(region);
     const randomCountries = randomQuestions(dataArray, questionNo);
     const questions = [];
 
-    console.log('itt');
     for (const country of randomCountries.questions) {
         let goodAnswer = 'No neighbour';
 
