@@ -4,8 +4,10 @@ import RegionDetailScreen from '../screens/RegionDetailScreen';
 import RegionScreen from '../screens/RegionScreen';
 import CountryDetailScreen from '../screens/CountryDetailsScreen';
 import GameScreen from '../screens/GameScreen';
-import { InitialGameObj } from '../utils/Constants';
+import { InitialDetailedStatObj, InitialGameObj } from '../utils/Constants';
 import QuestionNumberScreen from '../screens/QuestionNumberScreen';
+import QuestionsScreen from '../screens/QuestionsScreen';
+import DetailedStatisticsPage from '../screens/DetailedStatisticsScreen';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +27,9 @@ export const GamgeNavigation = () => {
         <Stack.Navigator headerMode={'screen'}>
             <Stack.Screen name="GameScreen" component={GameScreen} initialParams={{ nextRoute: 'SelectRegionGame', game: true, data: InitialGameObj }} />
             <Stack.Screen name="SelectRegionGame" component={RegionScreen} initialParams={{ nextRoute: 'SelectQuestionNumber', game: true, data: InitialGameObj }} />
-            <Stack.Screen name="SelectQuestionNumber" component={QuestionNumberScreen} initialParams={{ nextRoute: 'Game' }} />
+            <Stack.Screen name="SelectQuestionNumber" component={QuestionNumberScreen} initialParams={{ nextRoute: 'Questions', game: true, data: InitialGameObj }} />
+            <Stack.Screen name="Questions" component={QuestionsScreen} initialParams={{ nextRoute: 'DetailedStatistics', game: true, data: InitialGameObj }} />
+            <Stack.Screen name="DetailedStatistics" component={DetailedStatisticsPage} initialParams={{ nextRoute: 'GameScreen', game: true, data: InitialDetailedStatObj }} />
         </Stack.Navigator>
     );
 };
