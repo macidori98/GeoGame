@@ -5,6 +5,7 @@ import { generateGuessCapitalQuestions, generateGuessFlagQuestions, generateGues
 import Colors from '../theme/Colors';
 import moment from 'moment';
 import { getDurationString } from '../utils/Helpers';
+import { saveData } from '../services/SaveData';
 
 var correctAnswer;
 
@@ -35,12 +36,16 @@ const QuestionsScreen = ({ navigation, route }) => {
 
         var duration = getDurationString(durationInMillis);
 
+        const resultData = {
+            correctAns: correctAnswer,
+            startDate: moment(startDateAndTime).format('DD MMM yyyy, HH:mm'),
+            duration: duration,
+        };
+
+        saveData(resultData);
+
         navigation.navigate(route.params.nextRoute, {
-            data: {
-                correctAns: correctAnswer,
-                startDate: moment(startDateAndTime).format('DD MMM yyyy, HH:mm'),
-                duration: duration,
-            },
+            data: resultData,
         });
     };
 

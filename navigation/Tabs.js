@@ -1,11 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import StatisticsScreen from '../screens/StatisticsScreen';
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../theme/Colors';
 import { Screens } from '../utils/Constants';
-import { GamgeNavigation, StudyNavigation } from './Navigation';
+import { GamgeNavigation, StatisticsNavigation, StudyNavigation } from './Navigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -54,7 +53,7 @@ const Tabs = () => {
                     }
                 }
                 name={Screens.statistics}
-                component={StatisticsScreen} />
+                component={StatisticsNavigation} />
         </Tab.Navigator>
     );
 };

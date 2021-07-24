@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_URL = 'https://restcountries.eu/rest/v2';
+import { API_URL } from '../utils/Constants';
 
 //get region details
 export const getRegionDetails = async (region) => {
