@@ -1,16 +1,20 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, ActivityIndicator } from 'react-native';
 import Error from '../components/Error';
 import { generateGuessCapitalQuestions, generateGuessFlagQuestions, generateGuessTheNeighbourQuestions } from '../utils/RandomQuestionSelector';
 import Colors from '../theme/Colors';
-import moment from 'moment';
-import { getDurationString } from '../utils/Helpers';
-import { saveData } from '../services/SaveData';
+import { endGame } from '../utils/Helpers';
+import { GameModes } from '../utils/Constants';
+import GuessTheCapital from '../components/GuessTheCapital';
+import GuessTheFlag from '../components/GuessTheFlag';
+import GuessTheNeighbor from '../components/GuessTheNeighbor';
 
 var correctAnswer;
 
 const QuestionsScreen = ({ navigation, route }) => {
     const data = route.params.data;
+    const nextRoute = route.params.nextRoute;
+
     const [loading, setLoading] = React.useState(true);
     const [questionIndex, setQuestionIndex] = React.useState();
     const [error, setError] = React.useState();
@@ -18,42 +22,23 @@ const QuestionsScreen = ({ navigation, route }) => {
     const [gameData, setGameData] = React.useState();
 
     const onItemSelected = (item) => {
-        if (item == gameData[questionIndex].correctAnswer) {
+        if (item === gameData[questionIndex].correctAnswer) {
             correctAnswer++;
         }
 
-        if (questionIndex + 1 == data.questionNo) {
-            endGame();
+        if (questionIndex + 1 === parseInt(data.questionNo, 10)) {
+            endGame(startDateAndTime, correctAnswer, navigation, nextRoute);
             return;
         }
 
         setQuestionIndex(questionIndex + 1);
     };
 
-    const endGame = () => {
-        var endDate = Date.now();
-        var durationInMillis = endDate - startDateAndTime;
-
-        var duration = getDurationString(durationInMillis);
-
-        const resultData = {
-            correctAns: correctAnswer,
-            startDate: moment(startDateAndTime).format('DD MMM yyyy, HH:mm'),
-            duration: duration,
-        };
-
-        saveData(resultData);
-
-        navigation.navigate(route.params.nextRoute, {
-            data: resultData,
-        });
-    };
-
     React.useEffect(() => {
         correctAnswer = 0;
 
         switch (data.type) {
-            case 'Guess the neighbor':
+            case GameModes.GuessTheNeighbor:
                 generateGuessTheNeighbourQuestions(data.region, data.questionNo)
                     .then((resp) => {
                         setGameData(resp);
@@ -66,7 +51,7 @@ const QuestionsScreen = ({ navigation, route }) => {
                         setLoading(false);
                     });
                 break;
-            case 'Guess the flag':
+            case GameModes.GuessTheFlag:
                 generateGuessFlagQuestions(data.region, data.questionNo)
                     .then((resp) => {
                         setGameData(resp);
@@ -79,7 +64,7 @@ const QuestionsScreen = ({ navigation, route }) => {
                         setLoading(false);
                     });
                 break;
-            case 'Guess the capital':
+            case GameModes.GuessTheCapital:
                 generateGuessCapitalQuestions(data.region, data.questionNo)
                     .then((resp) => {
                         setGameData(resp);
@@ -101,73 +86,14 @@ const QuestionsScreen = ({ navigation, route }) => {
     return (
         <SafeAreaView style={styles.container}>
             {loading && !error && (<ActivityIndicator style={styles.center} size="large" color={Colors.primary} />)}
-            {!loading && !error && data.type === 'Guess the capital' && (
-                <View>
-                    <View>
-                        <Text style={styles.question}>{data.type} of {gameData[questionIndex].country}</Text>
-                    </View>
-                    <View style={styles.list}>
-                        <FlatList
-                            data={gameData[questionIndex].options}
-                            keyExtractor={(item, index) => index}
-                            renderItem={({ item }) =>
-                                <TouchableOpacity
-                                    style={styles.listItem}
-                                    onPress={() => onItemSelected(item)}>
-                                    <Text style={styles.centeredText}>
-                                        {item}
-                                    </Text>
-                                </TouchableOpacity>} />
-                    </View>
-                </View>
+            {!loading && !error && data.type === GameModes.GuessTheCapital && (
+                <GuessTheCapital data={gameData[questionIndex]} onItemSelected={onItemSelected} />
             )}
-            {!loading && !error && data.type === 'Guess the flag' && (
-                <View>
-                    <Text style={styles.question}>
-                        {data.type}
-                    </Text>
-                    <Image
-                        resizeMode={'cover'}
-                        style={styles.image}
-                        source={{ uri: `https://www.countryflags.io/${gameData[questionIndex].country}/shiny/64.png` }} />
-                    <View style={styles.list}>
-                        <FlatList
-                            data={gameData[questionIndex].options}
-                            keyExtractor={(item, index) => index}
-                            renderItem={({ item }) =>
-                                <TouchableOpacity
-                                    style={styles.listItem}
-                                    onPress={() => onItemSelected(item)}>
-                                    <Text style={styles.centeredText}>
-                                        {item}
-                                    </Text>
-                                </TouchableOpacity>} />
-                    </View>
-
-                </View>
-
+            {!loading && !error && data.type === GameModes.GuessTheFlag && (
+                <GuessTheFlag data={gameData[questionIndex]} onItemSelected={onItemSelected} />
             )}
-            {!loading && !error && data.type === 'Guess the neighbor' && (
-                <View>
-                    <Text style={styles.question}>
-                        {data.type} of {gameData[questionIndex].country}
-                    </Text>
-                    <View style={styles.list}>
-                        <FlatList
-                            data={gameData[questionIndex].options}
-                            keyExtractor={(item, index) => index}
-                            renderItem={({ item }) =>
-                                <TouchableOpacity
-                                    style={styles.listItem}
-                                    onPress={() => onItemSelected(item)}>
-                                    <Text style={styles.centeredText}>
-                                        {item}
-                                    </Text>
-                                </TouchableOpacity>} />
-                    </View>
-
-                </View>
-
+            {!loading && !error && data.type === GameModes.GuessTheNeighbor && (
+                <GuessTheNeighbor data={gameData[questionIndex]} onItemSelected={onItemSelected} />
             )}
             {error && (<Error />)}
         </SafeAreaView >

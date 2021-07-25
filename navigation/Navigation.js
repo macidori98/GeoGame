@@ -15,31 +15,31 @@ const Stack = createStackNavigator();
 export const StudyNavigation = () => {
 
     return (
-        <Stack.Navigator headerMode={'screen'}>
+        <Stack.Navigator headerMode={'none'}>
             <Stack.Screen name="SelectRegionStudy" component={RegionScreen} initialParams={{ nextRoute: 'RegionDetail' }} />
-            <Stack.Screen name="RegionDetail" component={RegionDetailScreen} initialParams={{ nextRoute: 'CountryDetail' }} />
-            <Stack.Screen name="CountryDetail" component={CountryDetailScreen} initialParams={{ nextRoute: 'CountryDetail' }} />
+            <Stack.Screen name="RegionDetail" component={RegionDetailScreen} initialParams={{ nextRoute: 'CountryDetail' }} options={{ headerTransparent: true }} />
+            <Stack.Screen name="CountryDetail" component={CountryDetailScreen} initialParams={{ nextRoute: 'CountryDetail' }} options={{ headerTransparent: true }} />
         </Stack.Navigator>
     );
 };
 
 export const GamgeNavigation = () => {
     return (
-        <Stack.Navigator headerMode={'screen'}>
-            <Stack.Screen name="GameScreen" component={GameScreen} initialParams={{ nextRoute: 'SelectRegionGame', game: true, data: InitialGameObj }} />
-            <Stack.Screen name="SelectRegionGame" component={RegionScreen} initialParams={{ nextRoute: 'SelectQuestionNumber', game: true, data: InitialGameObj }} />
-            <Stack.Screen name="SelectQuestionNumber" component={QuestionNumberScreen} initialParams={{ nextRoute: 'Questions', game: true, data: InitialGameObj }} />
-            <Stack.Screen name="Questions" component={QuestionsScreen} initialParams={{ nextRoute: 'DetailedStatisticsGame', game: true, data: InitialGameObj }} />
-            <Stack.Screen name="DetailedStatisticsGame" component={DetailedStatisticsPage} initialParams={{ nextRoute: 'GameScreen', game: true, data: InitialDetailedStatObj }} />
+        <Stack.Navigator headerMode={'none'}>
+            <Stack.Screen name="GameScreen" component={GameScreen} initialParams={{ nextRoute: 'SelectRegionGame', game: true, data: InitialGameObj }} options={{ headerTransparent: true }} />
+            <Stack.Screen name="SelectRegionGame" component={RegionScreen} initialParams={{ nextRoute: 'SelectQuestionNumber', game: true, data: InitialGameObj }} options={{ headerTransparent: true }} />
+            <Stack.Screen name="SelectQuestionNumber" component={QuestionNumberScreen} initialParams={{ nextRoute: 'Questions', game: true, data: InitialGameObj }} options={{ headerTransparent: true }} />
+            <Stack.Screen name="Questions" component={QuestionsScreen} initialParams={{ nextRoute: 'DetailedStatisticsGame', game: true, data: InitialGameObj }} options={{ headerTransparent: true }} />
+            <Stack.Screen name="DetailedStatisticsGame" component={DetailedStatisticsPage} initialParams={{ nextRoute: 'GameScreen', game: true, data: InitialDetailedStatObj }} options={{ headerTransparent: true }} />
         </Stack.Navigator>
     );
 };
 
 export const StatisticsNavigation = () => {
     return (
-        <Stack.Navigator headerMode={'screen'}>
-            <Stack.Screen name="StatisticsScreen" component={StatisticsScreen} initialParams={{ nextRoute: 'DetailedStatistics' }} />
-            <Stack.Screen name="DetailedStatistics" component={DetailedStatisticsPage} initialParams={{ nextRoute: '', game: false, data: InitialDetailedStatObj }} />
+        <Stack.Navigator headerMode={'none'}>
+            <Stack.Screen name="StatisticsScreen" component={StatisticsScreen} initialParams={{ nextRoute: 'DetailedStatistics' }} options={{ headerTransparent: true }} />
+            <Stack.Screen name="DetailedStatistics" component={DetailedStatisticsPage} initialParams={{ nextRoute: '', game: false, data: InitialDetailedStatObj }} options={{ headerTransparent: true }} />
         </Stack.Navigator>
     );
 };

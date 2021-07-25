@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native';
 import CountryList from '../components/CountryList';
 import Error from '../components/Error';
 import { getRegionDetails } from '../services/service';
@@ -27,23 +27,25 @@ const RegionDetailScreen = ({ route, navigation }) => {
 
     return (
         <React.Fragment>
-            <View style={styles.center}>
-                <Text style={styles.text}>
-                    {regionName}
-                </Text>
-            </View>
-            {loading && (<ActivityIndicator style={styles.center} size="large" color={Colors.primary} />)}
-            {regionData.length > 0 && !error && (
-                <CountryList navigation={navigation} dataList={regionData} route={nextRoute} />
-            )}
-            {regionData.length === 0 && !loading && !error && (
+            <SafeAreaView>
                 <View style={styles.center}>
-                    <Text>
-                        No data.
+                    <Text style={styles.text}>
+                        {regionName}
                     </Text>
                 </View>
-            )}
-            {error && (<Error />)}
+                {loading && (<ActivityIndicator style={styles.center} size="large" color={Colors.primary} />)}
+                {regionData.length > 0 && !error && (
+                    <CountryList navigation={navigation} dataList={regionData} route={nextRoute} />
+                )}
+                {regionData.length === 0 && !loading && !error && (
+                    <View style={styles.center}>
+                        <Text>
+                            No data.
+                        </Text>
+                    </View>
+                )}
+                {error && (<Error />)}
+            </SafeAreaView>
         </React.Fragment>
     );
 };

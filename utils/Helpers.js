@@ -1,3 +1,6 @@
+import moment from 'moment';
+import { saveData } from '../services/SaveData';
+
 export const shuffle = (arr) => {
     var i, j, temp;
     for (i = arr.length - 1; i > 0; i--) {
@@ -19,4 +22,23 @@ export const getDurationString = (durationInMillis) => {
     var minutesString = minutes.toString().length === 2 ? `${minutes}` : `0${minutes}`;
 
     return `${minutesString}:${stringSec}`;
+};
+
+export const endGame = (startDateAndTime, correctAnswer, navigation, nextRoute) => {
+    var endDate = Date.now();
+    var durationInMillis = endDate - startDateAndTime;
+
+    var duration = getDurationString(durationInMillis);
+
+    const resultData = {
+        correctAns: correctAnswer,
+        startDate: moment(startDateAndTime).format('DD MMM yyyy, HH:mm'),
+        duration: duration,
+    };
+
+    saveData(resultData);
+
+    navigation.navigate(nextRoute, {
+        data: resultData,
+    });
 };

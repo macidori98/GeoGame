@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     },
     bottomNav: {
         position: 'absolute',
-        bottom: 20,
+        bottom: Platform.OS === 'ios' ? 20 : 5,
         left: 15,
         right: 15,
         elevation: 0,
