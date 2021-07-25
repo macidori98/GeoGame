@@ -5,6 +5,7 @@ import Colors from '../theme/Colors';
 const DetailedStatisticsPage = ({ navigation, route }) => {
     const data = route.params.data;
     const nextRoute = route.params.nextRoute;
+    const gameMode = route.params.game;
 
     return (
         <SafeAreaView style={styles.center}>
@@ -15,12 +16,12 @@ const DetailedStatisticsPage = ({ navigation, route }) => {
                 <Text style={styles.mediumText}>{data.startDate}</Text>
                 <Text style={styles.normalText}>Duration</Text>
                 <Text style={styles.mediumText}>{data.duration}</Text>
-                <TouchableOpacity
+                {gameMode && (<TouchableOpacity
                     onPress={() => { navigation.navigate(nextRoute); }}
                     style={styles.button}
                 >
                     <Text style={styles.buttonText}>Play again</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>)}
             </View>
         </SafeAreaView >
 

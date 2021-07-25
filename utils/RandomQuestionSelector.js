@@ -42,24 +42,6 @@ export const randomOtherAnswers = (dataArray, blacklistedIndex, numberOfNeededAn
     return questions;
 };
 
-export const getAllData = (dataArray, questionsAndIndexes) => {
-    const allQuestions = [];
-    const questions = [...questionsAndIndexes.questions];
-    const indexes = [...questionsAndIndexes.indexes];
-
-    for (var i = 0; i < indexes.length; ++i) {
-        var data = [];
-        data = [...randomOtherAnswers(dataArray, indexes[i]), questions[i]];
-
-        allQuestions.push(data);
-    }
-
-    return {
-        correctAnswers: questions,
-        allQuestions: allQuestions,
-    };
-};
-
 export const generateGuessFlagQuestions = async (region, questionNo) => {
     const dataArray = await getRegionDetails(region);
     const randomCountries = randomQuestions(dataArray, questionNo);
