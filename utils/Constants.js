@@ -10,8 +10,17 @@ export const Regions = [
 ];
 
 export const GameTypes = [
-    { name: 'Guess the capital' }, { name: 'Guess the neighbor' }, { name: 'Guess the flag' },
+    { name: 'Guess the capital' },
+    { name: 'Guess the neighbor' },
+    { name: 'Guess the flag' },
 ];
+
+export const GameModes =
+{
+    GuessTheCapital: 'Guess the capital',
+    GuessTheNeighbor: 'Guess the neighbor',
+    GuessTheFlag: 'Guess the flag',
+};
 
 export const InitialGameObj = { type: '', region: '', questionNo: '' };
 
