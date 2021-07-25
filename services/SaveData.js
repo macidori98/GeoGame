@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { DATABASE_KEY } from '../utils/Constants';
 
 export const saveData = async (newGame) => {

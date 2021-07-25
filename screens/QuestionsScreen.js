@@ -62,7 +62,6 @@ const QuestionsScreen = ({ navigation, route }) => {
                         setStartDateAndTime(Date.now());
                     })
                     .catch((err) => {
-                        console.log(err);
                         setError(err);
                         setLoading(false);
                     });
@@ -76,7 +75,6 @@ const QuestionsScreen = ({ navigation, route }) => {
                         setStartDateAndTime(Date.now());
                     })
                     .catch((err) => {
-                        console.log(err);
                         setError(err);
                         setLoading(false);
                     });
@@ -90,7 +88,6 @@ const QuestionsScreen = ({ navigation, route }) => {
                         setStartDateAndTime(Date.now());
                     })
                     .catch((err) => {
-                        console.log(err);
                         setError(err);
                         setLoading(false);
                     });

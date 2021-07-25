@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, RefreshControl, FlatList, StyleSheet } from 'react-native';
+import { View, SafeAreaView, RefreshControl, FlatList, StyleSheet } from 'react-native';
 import React from 'react';
 import { readData } from '../services/SaveData';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -7,6 +7,7 @@ import ResultsCard from '../components/ResultsCard';
 const StatisticsScreen = ({ navigation, route }) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const [gameData, setGameData] = React.useState([]);
+    const [error, setError] = React.useState();
     const nextRoute = route.params.nextRoute;
 
     const onRefresh = React.useCallback(() => {
@@ -20,7 +21,9 @@ const StatisticsScreen = ({ navigation, route }) => {
                 setGameData(result.reverse());
                 setRefreshing(false);
             })
-            .catch();
+            .catch(err => {
+                setError(err);
+            });
     };
 
     const onItemClick = (item) => {
