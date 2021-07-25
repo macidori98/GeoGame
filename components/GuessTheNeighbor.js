@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Colors from '../theme/Colors';
+import { GameModes } from '../utils/Constants';
 
 class GuessTheNeighbor extends React.PureComponent {
     render() {
@@ -9,7 +10,7 @@ class GuessTheNeighbor extends React.PureComponent {
         return (
             <View>
                 <Text style={styles.question}>
-                    {data.type} of {data.country}
+                    {GameModes.GuessTheNeighbor} of {data.country}
                 </Text>
                 <View style={styles.list}>
                     <FlatList

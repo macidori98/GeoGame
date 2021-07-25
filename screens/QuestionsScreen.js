@@ -22,11 +22,11 @@ const QuestionsScreen = ({ navigation, route }) => {
     const [gameData, setGameData] = React.useState();
 
     const onItemSelected = (item) => {
-        if (item == gameData[questionIndex].correctAnswer) {
+        if (item === gameData[questionIndex].correctAnswer) {
             correctAnswer++;
         }
 
-        if (questionIndex + 1 == data.questionNo) {
+        if (questionIndex + 1 === parseInt(data.questionNo, 10)) {
             endGame(startDateAndTime, correctAnswer, navigation, nextRoute);
             return;
         }
