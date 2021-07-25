@@ -89,7 +89,7 @@ const CountryDetailScreen = ({ route, navigation }) => {
                                 </View>
                                 {
                                     borders.length === 0 ? (
-                                        <View>
+                                        <View style={style.noBorder}>
                                             <Text style={style.centeredText}>{countryData.name} does not have borders.</Text>
                                         </View>
                                     ) : (
@@ -145,6 +145,10 @@ const style = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         margin: 15,
+    },
+    noBorder: {
+        margin: 20,
+        marginBottom: 100,
     },
 });
 

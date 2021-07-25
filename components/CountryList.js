@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, Dimensions, StyleSheet } from 'react-native';
+import { View, FlatList, Dimensions, StyleSheet, Platform } from 'react-native';
 import CountryCard from './CountryCard';
 import PropTypes from 'prop-types';
 
@@ -18,6 +18,7 @@ class CountryList extends React.PureComponent {
             <View>
                 <FlatList
                     nestedScrollEnabled={true}
+                    contentContainerStyle={styles.listPadding}
                     style={styles.list}
                     data={dataList}
                     keyExtractor={item => item.name}
@@ -33,7 +34,9 @@ export default CountryList;
 
 const styles = StyleSheet.create({
     list: {
-        marginBottom: 75,
         width: dimensions.width,
+    },
+    listPadding: {
+        paddingBottom: Platform.OS === 'ios' ? 180 : 220,
     },
 });
