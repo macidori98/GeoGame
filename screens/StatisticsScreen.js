@@ -11,6 +11,7 @@ const StatisticsScreen = ({ navigation, route }) => {
     const [gameData, setGameData] = React.useState([]);
     const [error, setError] = React.useState();
     const [loading, setLoading] = React.useState(true);
+
     const nextRoute = route.params.nextRoute;
 
     const onRefresh = React.useCallback(() => {

@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import { StyleSheet, View, Text, Platform, LogBox } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../theme/Colors';
 import { Screens } from '../utils/Constants';
@@ -9,6 +9,10 @@ import { GamgeNavigation, StatisticsNavigation, StudyNavigation } from './Naviga
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
+    React.useEffect(() => {
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    }, []);
+
     return (
         <Tab.Navigator
             tabBarOptions={{
