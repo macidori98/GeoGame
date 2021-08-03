@@ -1,10 +1,12 @@
-import { View, SafeAreaView, RefreshControl, FlatList, StyleSheet, Text, ActivityIndicator } from 'react-native';
+import { View, SafeAreaView, RefreshControl, FlatList, StyleSheet, Text, ActivityIndicator, Dimensions } from 'react-native';
 import React from 'react';
 import { readData } from '../services/SaveData';
 import { ScrollView } from 'react-native-gesture-handler';
 import ResultsCard from '../components/ResultsCard';
 import Error from '../components/Error';
 import Colors from '../theme/Colors';
+
+const dimenstions = Dimensions.get('screen');
 
 const StatisticsScreen = ({ navigation, route }) => {
     const [refreshing, setRefreshing] = React.useState(false);
@@ -22,7 +24,7 @@ const StatisticsScreen = ({ navigation, route }) => {
     const readLocalData = () => {
         readData()
             .then((result) => {
-                setGameData(result.reverse());
+                setGameData(result == null || result.length === 0 ? [] : result.reverse());
                 setRefreshing(false);
                 setLoading(false);
             })
@@ -46,17 +48,16 @@ const StatisticsScreen = ({ navigation, route }) => {
         <SafeAreaView>
             <View style={styles.container}>
                 {loading && !error && (<ActivityIndicator style={styles.center} size="large" color={Colors.primary} />)}
-                {gameData.length === 0 && !error && !loading && (
-                    <Text>No played games data</Text>
-                )}
-                {gameData.length > 0 && !error && !loading && (
-                    <ScrollView
+                {!error && !loading && (
+                    <ScrollView contentContainerStyle={styles.scrollContainer}
                         refreshControl={<RefreshControl refreshing={refreshing}
                             onRefresh={onRefresh} />}>
-                        <FlatList data={gameData}
+                        {gameData.length === 0 && <Text style={styles.text}>No played games data</Text>}
+
+                        {gameData.length >= 0 && <FlatList data={gameData}
                             keyExtractor={(item, index) => index}
                             renderItem={({ item }) =>
-                                <ResultsCard onItemClick={onItemClick} item={item} />} />
+                                <ResultsCard onItemClick={onItemClick} item={item} />} />}
                     </ScrollView>)}
                 {error && !loading && <Error />}
             </View>
@@ -73,5 +74,13 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginRight: 20,
         marginLeft: 20,
+    },
+    text: {
+        textAlign: 'center',
+    },
+    scrollContainer: {
+        width: dimenstions.width - 40,
+        flexGrow: 1,
+        alignSelf: 'center',
     },
 });

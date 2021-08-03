@@ -34,6 +34,18 @@ const QuestionsScreen = ({ navigation, route }) => {
         setQuestionIndex(questionIndex + 1);
     };
 
+    const setData = (resp) => {
+        setGameData(resp);
+        setQuestionIndex(0);
+        setLoading(false);
+        setStartDateAndTime(Date.now());
+    };
+
+    const setErr = (err) => {
+        setError(err);
+        setLoading(false);
+    };
+
     React.useEffect(() => {
         correctAnswer = 0;
 
@@ -41,40 +53,28 @@ const QuestionsScreen = ({ navigation, route }) => {
             case GameModes.GuessTheNeighbor:
                 generateGuessTheNeighbourQuestions(data.region, data.questionNo)
                     .then((resp) => {
-                        setGameData(resp);
-                        setQuestionIndex(0);
-                        setLoading(false);
-                        setStartDateAndTime(Date.now());
+                        setData(resp);
                     })
                     .catch((err) => {
-                        setError(err);
-                        setLoading(false);
+                        setErr(err);
                     });
                 break;
             case GameModes.GuessTheFlag:
                 generateGuessFlagQuestions(data.region, data.questionNo)
                     .then((resp) => {
-                        setGameData(resp);
-                        setQuestionIndex(0);
-                        setLoading(false);
-                        setStartDateAndTime(Date.now());
+                        setData(resp);
                     })
                     .catch((err) => {
-                        setError(err);
-                        setLoading(false);
+                        setErr(err);
                     });
                 break;
             case GameModes.GuessTheCapital:
                 generateGuessCapitalQuestions(data.region, data.questionNo)
                     .then((resp) => {
-                        setGameData(resp);
-                        setQuestionIndex(0);
-                        setLoading(false);
-                        setStartDateAndTime(Date.now());
+                        setData(resp);
                     })
                     .catch((err) => {
-                        setError(err);
-                        setLoading(false);
+                        setErr(err);
                     });
                 break;
 

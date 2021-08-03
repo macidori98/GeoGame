@@ -3,7 +3,7 @@ import { DATABASE_KEY } from '../utils/Constants';
 
 export const saveData = async (newGame) => {
     var gamesList = await readData();
-    gamesList != null ? gamesList.push(newGame) : gamesList = [];
+    gamesList != null ? gamesList.push(newGame) : gamesList = [newGame];
 
     try {
         const jsonValue = JSON.stringify(gamesList);
